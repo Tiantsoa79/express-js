@@ -4,7 +4,7 @@ const app = express();
 const port = 4000;
 const cors = require('cors');
 
-app.use(cors());
+//app.use(cors());
 
 // Middleware pour traiter les données JSON des requêtes POST
 app.use(bodyParser.json());
@@ -13,30 +13,39 @@ app.use(bodyParser.json());
 const loginData = [];
 
 // Endpoint pour gérer les requêtes POST /login
-app.post('/login', (req, res) => {
+app.post('/login', cors(), (req, res) => {
   // Récupérez les données du corps de la requête
   const { cliId, username, password } = req.body;
 
   // Enregistrez les données dans la variable loginData
   loginData.push({ cliId, username, password });
 
-  if (username && password) {
-    res.status(200).json({ message: 'Authentification réussie' });
-  } else {
-    res.status(401).json({ message: 'Authentification échouée' });
+  try {
+    if (username && password) {
+      res.status(200).json({ message: 'Authentification réussie' });
+    } else {
+      res.status(401).json({ message: 'Authentification échouée' });
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 
 // Endpoint pour gérer les requêtes PATCH /ping
-app.patch('/ping', (req, res) => {
+app.patch('/ping', cors(), (req, res) => {
   // Récupérez le cliId de la requête
   const cliId = req.query.cliId;
 
-  res.status(200).json({ message: 'Ping réussi', cliId });
+  try {
+    res.status(200).json({ message: 'Ping réussi', cliId });
+  } catch (error) {
+    console.log(error);
+  }
+ 
 });
 
 // Endpoint pour gérer les requêtes GET /
-app.get('/', (req, res) => {
+app.get('/', cors(), (req, res) => {
  
   res.json({ message: 'Données de l\'application Express.js', loginData });
 });
