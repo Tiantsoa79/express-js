@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 4000;
+const cors = require('cors');
+
+app.use(cors());
 
 // Middleware pour traiter les données JSON des requêtes POST
 app.use(bodyParser.json());
@@ -34,7 +37,7 @@ app.patch('/ping', (req, res) => {
 
 // Endpoint pour gérer les requêtes GET /
 app.get('/', (req, res) => {
-
+ 
   res.json({ message: 'Données de l\'application Express.js', loginData });
 });
 
